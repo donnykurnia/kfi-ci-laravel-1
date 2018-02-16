@@ -18,10 +18,11 @@ class StockTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testStockQty()
     {
         $product_name = 'Macbook';
         $incoming = Incoming::create(['product_name' => $product_name, 'qty' => 10]);
         $this->assertEquals(10, $incoming->qty);
+        $this->assertEquals(10, $incoming->stock->qty);
     }
 }

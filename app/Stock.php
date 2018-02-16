@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
+    protected $fillable = ['product_name'];
+
     public function incomings()
     {
         return $this->hasMany('App\Incoming');
