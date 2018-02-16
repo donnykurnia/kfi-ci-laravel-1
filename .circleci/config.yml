@@ -28,4 +28,4 @@ jobs:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
       - run: php artisan migrate --env=testing --database=pgsql --force
-      - run: .vendor/bin/phpunit
+      - run: ./vendor/bin/phpunit
