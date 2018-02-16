@@ -3,16 +3,15 @@
 namespace App\Observers;
 
 use App\Outgoing;
+use App\Stock;
 
 class OutgoingObserver
 {
-    public function creating(Outgoing $outgoing)
+    public function created(Outgoing $outgoing)
     {
-        //
-    }
-
-    public function deleting(Outgoing $outgoing)
-    {
-        //
+        $stock = Stock::firstOrCreate(['product_name' => $outgoing->product_name]);
+        $outgoing->stock()->associate($stock);
+        $stock->qty -= $outgoing->qty;
+        $stock->save();
     }
 }
