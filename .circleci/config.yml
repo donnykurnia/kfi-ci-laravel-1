@@ -35,6 +35,7 @@ jobs:
       - image: circleci/ubuntu-server
     working_directory: /tmp/my-project  
     steps:
+      - checkout
       - run:
           name: Run setup script
           command: bash .circleci/setup-heroku.sh
@@ -43,7 +44,9 @@ jobs:
             - "7a:3c:2e:99:38:fe:f3:67:cb:0f:6e:e7:d6:41:13:62"
       - run:
           name: Deploy Master to Heroku
-          command: git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
+          command: |
+            git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
+            heroku run php artisan migrate --force
 
 workflows:
   version: 2
