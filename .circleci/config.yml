@@ -9,23 +9,23 @@ jobs:
         - POSTGRES_USER: default
         - POSTGRES_DB: default
         - POSTGRES_PASSWORD: secret
-    working_directory: ~/laravel
+    working_directory: ~/repo
     steps:
       - checkout
       - run: sudo apt install -y postgresql-client
       - run: sudo docker-php-ext-install zip
       - run: sudo docker-php-ext-install pgsql
       - run: sudo composer self-update
+      # Download and cache dependencies
       - restore_cache:
           keys:
-            - composer-v1-{{ checksum "composer.lock" }}
-            - composer-v1-
+          - v1-dependencies-{{ checksum "composer.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
       - run: composer install -n --prefer-dist
       - save_cache:
-          key: composer-v1-{{ checksum "composer.lock" }}
           paths:
-            - vendor
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
       - run: php artisan migrate --env=testing --force
-      - run:
-         name: Test 1 - Run Phpunit for Server-Side HTTP Requests & PHP Unit Testing
-         command: .vendor/bin/phpunit
+      - run: .vendor/bin/phpunit
