@@ -16,7 +16,7 @@ class CreateStocksTable extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('product_name')->unique();
-            $table->decimal('qty', 12, 2);
+            $table->decimal('qty', 12, 2)->default(0);
             $table->timestamps();
         });
     }

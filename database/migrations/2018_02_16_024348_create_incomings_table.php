@@ -16,7 +16,7 @@ class CreateIncomingsTable extends Migration
         Schema::create('incomings', function (Blueprint $table) {
             $table->increments('id');
             $table->string('product_name')->unique();
-            $table->decimal('qty', 12, 2);
+            $table->decimal('qty', 12, 2)->default(0);
             $table->integer('stock_id')->unsigned()->nullable();
             $table->foreign('stock_id')->references('id')->on('stocks')
                 ->onUpdate('cascade')
