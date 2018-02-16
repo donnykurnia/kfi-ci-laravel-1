@@ -17,7 +17,7 @@ class CreateOutgoingsTable extends Migration
             $table->increments('id');
             $table->string('product_name')->unique();
             $table->decimal('qty', 12, 2);
-            $table->integer('stock_id')->unsigned();
+            $table->integer('stock_id')->unsigned()->nullable();
             $table->foreign('stock_id')->references('id')->on('stocks')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
