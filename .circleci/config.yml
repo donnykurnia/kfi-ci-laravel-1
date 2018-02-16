@@ -32,10 +32,11 @@ jobs:
 
   deploy-job:
     docker:
-      - image: circleci/ubuntu-server
+      - image: ubuntu
     working_directory: /tmp/my-project  
     steps:
       - checkout
+      - run: apt-get update && apt-get install -y git wget
       - run:
           name: Run setup script
           command: bash .circleci/setup-heroku.sh
