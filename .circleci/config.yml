@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build:
+  build-job:
     docker:
       - image: circleci/php:7.1-fpm-node-browsers
       - image: circleci/postgres:alpine
@@ -29,3 +29,31 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
       - run: php artisan migrate --env=testing --database=pgsql --force
       - run: ./vendor/bin/phpunit
+
+  deploy-job:
+    docker:
+      - image: my-image
+    working_directory: /tmp/my-project  
+    steps:
+      - run:
+          name: Run setup script
+          command: bash .circleci/setup-heroku.sh
+      - add_ssh_keys:
+          fingerprints:
+            - "7a:3c:2e:99:38:fe:f3:67:cb:0f:6e:e7:d6:41:13:62"
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
+               
+ workflows:
+   version: 2
+   build-deploy:
+     jobs:
+       - build-job
+       - deploy-job:
+           requires:
+             - build-job
+           filters:
+             branches:
+               only: master
