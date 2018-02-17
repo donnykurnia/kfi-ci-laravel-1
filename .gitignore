@@ -13,3 +13,4 @@ yarn-error.log
 .env
 /kfi-ci-laradock
 storage/logs/laravel.log
+/storage/framework/sessions/*
